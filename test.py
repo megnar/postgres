@@ -6,43 +6,8 @@ def hex(x):
     return x
 
 
-def data_row(fields: list):
-    answer = b'D'
-    num_fields = len(fields)
-    length = 6 + num_fields * 4
-    for field in fields:
-        length += len(str(field))
-    length_as_bytes = length.to_bytes(4, "big")
-    num_fields_as_bytes = num_fields.to_bytes(2, "big")
-    answer += length_as_bytes + num_fields_as_bytes
-    for field in fields:
-        field_length = len(str(field))
-        answer += field_length.to_bytes(4, "big") + field.encode("utf-8")
-    return answer
-
-def row_description(fields: list):
-    answer = b'T'
-    num_fields = len(fields)
-    length = 6 + num_fields * 19  
-    for field in fields:
-        length += len(str(field))
-    length_as_bytes = length.to_bytes(4, "big")
-    num_fields_as_bytes = num_fields.to_bytes(2, "big")
-    answer += length_as_bytes + num_fields_as_bytes
-    for index, field in enumerate(fields):
-        answer += str(field).encode("utf-8") + b'\x00'
-        answer += b'\x00\x00@\x02'
-        answer += (index + 1).to_bytes(2, "big")
-        answer += b'\x00\x00\x04\x13'
-        answer += b'\xff\xff'
-        answer += b'\x00\x00\x00h'
-        answer += b'\x00\x00'
-    return answer
-
 if __name__ == '__main__':
-    x = "00000068"
+    x = "020000004500009d00004000400600007f0000017f0000011538f981ea22a49c3bc4fab5801818eafe9100000101080ad4517a705ac380e34500000068534552524f5200564552524f5200433432503031004d72656c6174696f6e202273646764672220646f6573206e6f7420657869737400503135004670617273655f72656c6174696f6e2e63004c3133383400527061727365724f70656e5461626c650000"
     print(hex(x))
-
-    print(row_description(["clo"]))
 
     # print(data_row(["John", "31"]))

@@ -1,23 +1,37 @@
-import socket
+import psycopg2
+import time
 
-# Адрес и порт сервера
-server_address = ('127.0.0.1', 5433)
 
-# Создание сокета TCP
-client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+if __name__ == '__main__':
 
-try:
-    # Подключение к серверу
-    client_socket.connect(server_address)
+    conn = psycopg2.connect(
+        dbname="test_db",
+        user="admin",
+        password="admin",
+        host="0.0.0.0",
+        port="5435"
+    )
 
-    # Отправка данных на сервер
-    message = "Hello, server!"
-    client_socket.sendall(message.encode())
+    cur = conn.cursor()
 
-    # Получение ответа от сервера
-    data = client_socket.recv(1024)
-    print("Received:", data.decode())
+    # cur.execute("""CREATE TABLE my_table2 (
+    # name VARCHAR(100),
+    # age INTEGER
+    # );
+    # """)
+    
+    # cur.execute("""INSERT INTO my_table2 (name, age)
+    # VALUES (%s, %s)
+    # """, ("antonydfgdffsdfsdfsdfsd", 234))
+    cur.execute("""SELECT 1""")
+    cur.execute("""SELECT * from my_table2""")
+    cur.execute("""SELECT 1""")
 
-finally:
-    # Закрытие соединения
-    client_socket.close()
+    #cur.execute("""SELECT * FROM table_doesnt_exist""")
+    rows = cur.fetchall()
+    for row in rows:
+        print(row)
+
+    cur.close()
+    conn.close()
+

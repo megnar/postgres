@@ -25,6 +25,8 @@ if __name__ == '__main__':
     # """, ("antonydfgdffsdfsdfsdfsd", 234))
     cur.execute("""SELECT 1""")
     cur.execute("""SELECT * from my_table2""")
+
+    #cur.execute("""SELECT * FROM table_doesnt_exist""")
     rows = cur.fetchall()
     for row in rows:
         print(row)
